@@ -103,4 +103,27 @@ class Admin
       echo 'Excepción capturada: ',  $e->getMessage();
     }
   }
+
+  public function eliminar_disciplina($conn, $id)
+  {
+    try {
+      $conn
+        ->prepare("DELETE FROM disciplina WHERE cod_disciplina = :id")
+        ->execute([":id" => $id]);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage();
+    }
+  }
+
+  public function tiene_registros_disciplina($conn, $id)
+  {
+    try {
+      $statement = $conn->prepare("SELECT * FROM cancha WHERE Disciplina_cod_disciplina  = :id LIMIT 1");
+      $statement->execute([":id" => $id]);
+
+      return ($statement->rowCount() > 0);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage();
+    }
+  }
 }

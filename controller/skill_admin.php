@@ -34,6 +34,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   } elseif ($_POST['action'] == 'delete_skill') {
+
+    $id = $_GET["id_disciplina"];
+
+    $statement = $admin->obtener_disciplina($conn, $id);
+
+    if ($statement->rowCount() == 0) {
+      http_response_code(404);
+      echo ("HTTP 404 NOT FOUND");
+      return;
+    }
+
+    $disciplina = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($disciplina["empresa_cod_empresa"] !== $_SESSION["admin"]["cod_empresa"]) {
+      http_response_code(403);
+      echo ("HTTP 403 UNAUTHORIZED");
+      return;
+    }
+
+    if ($admin->tiene_registros_disciplina($conn, $id)) {
+      $error = "La disciplina {$disciplina['nombre_disciplina']} ya tiene registros.";
+    } else {
+      $admin->eliminar_disciplina($conn, $id);
+
+      $_SESSION["flash"] = ["message" => "{$disciplina['nombre_disciplina']} eliminado correctamente."];
+
+      header("Location: home.php");
+    }
   } elseif ($_POST['action'] == 'update_skill') {
 
     if (empty($_POST["name"]) || empty($_POST["price"])) {
@@ -41,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $id_disciplina = $_GET["id_disciplina"];
       $statement = $admin->obtener_disciplina($conn, $id_disciplina);
       $disciplina = $statement->fetch(PDO::FETCH_ASSOC);
-
     } else {
       $id = $_GET["id_disciplina"];
       $name = $_POST["name"];
