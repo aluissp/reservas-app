@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand font-weight-bold" href="/reservas-app/index.php">
+    <a class="navbar-brand font-weight-bold" href="#">
       <img class="mr-2" src="/reservas-app/static/img/logo.png" />
       Reservas App
     </a>

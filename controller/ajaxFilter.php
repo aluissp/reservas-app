@@ -35,9 +35,7 @@ if ($_POST) {
 
               <a href="offer.php?id_disciplina='.$disciplina["cod_disciplina"].'" class="btn btn-outline-info mb-2 col-7">Promocionar</a>
 
-              <a href="court.php?id_disciplina='.$disciplina["cod_disciplina"].'" class="btn btn-outline-warning mb-2">Añadir canchas</a>
-
-              <a href="edit_skill.php?id_disciplina='.$disciplina["cod_disciplina"].'" class="btn btn-outline-secondary mb-2">Editar disciplina</a>
+              <a href="edit_skill.php?id_disciplina='.$disciplina["cod_disciplina"].'" class="btn btn-outline-warning mb-2 col-7 p-2">Editar disciplina</a>
 
               <form class="d-none" action="home.php?id_disciplina='.$disciplina["cod_disciplina"].'" method="POST" id="form-'.$disciplina["cod_disciplina"].'">
                 <input value="delete_skill" name="action">

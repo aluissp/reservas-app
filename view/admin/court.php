@@ -47,16 +47,27 @@ require "../partials/header.php";
           <th scope="col">Acciones</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <th>Active container</th>
-          <td>Column content</td>
-          <td>Column content</td>
-          <td>
-            <button class="btn btn-outline-warning col-5">Editar</button>
-            <button class="btn btn-outline-danger ml-1 col-5">Eliminar</button>
-          </td>
-        </tr>
+      <tbody id="table-cancha">
+        <?php if ($todas_canchas->rowCount() == 0) : ?>
+          <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+              <p>No hay canchas guardadas todavía</p>
+              <a href="#">Agrega uno!</a>
+            </div>
+          </div>
+        <?php endif ?>
+
+        <?php foreach ($todas_canchas as $cancha) : ?>
+          <tr>
+            <th><?= $cancha['nombre_cancha'] ?></th>
+            <td><?= $cancha['nombre_disciplina'] ?></td>
+            <td><?= ($cancha['estado_cancha'] > 0) ? 'ocupado' : 'desocupado' ?></td>
+            <td>
+              <button class="btn btn-outline-warning col-5" id="<?= $cancha['cod_cancha'] ?>">Editar</button>
+              <button class="btn btn-outline-danger ml-1 col-5" id="<?= $cancha['cod_cancha'] ?>">Eliminar</button>
+            </td>
+          </tr>
+          <?php endforeach ?>
       </tbody>
     </table>
   </div>
