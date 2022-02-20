@@ -43,7 +43,7 @@
               <a class="nav-link" href="/reservas-app/view/admin/add_skill.php">Añadir disciplina</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/reservas-app/view/add_reserve.php">Añadir cancha</a>
+              <a class="nav-link" href="/reservas-app/view/admin/court.php">Añadir cancha</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/reservas-app/view/logout.php">Cerrar sesión</a>

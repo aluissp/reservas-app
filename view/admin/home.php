@@ -8,7 +8,7 @@ require "../partials/header.php";
   <div class="row my-3">
     <input type="text" class="form-control" placeholder="Filtrar disciplinas" id="txt-filter">
   </div>
-  
+
   <?php if ($error) : ?>
     <p class="text-danger text-center">
       <?= $error ?>
@@ -32,9 +32,9 @@ require "../partials/header.php";
             <h3 class="card-title text-capitalize"><?= $disciplina["nombre_disciplina"] ?></h3>
             <p class="m-2">$ <?= $disciplina["precio_disciplina"] ?></p>
 
-            <a href="edit.php?id_disciplina=<?= $disciplina["cod_disciplina"] ?>" class="btn btn-outline-info mb-2 col-7">Promocionar</a>
+            <a href="offer.php?id_disciplina=<?= $disciplina["cod_disciplina"] ?>" class="btn btn-outline-info mb-2 col-7">Promocionar</a>
 
-            <a href="edit.php?id_disciplina=<?= $disciplina["cod_disciplina"] ?>" class="btn btn-outline-warning mb-2">Añadir canchas</a>
+            <a href="court.php?id_disciplina=<?= $disciplina["cod_disciplina"] ?>" class="btn btn-outline-warning mb-2">Añadir canchas</a>
 
             <a href="edit_skill.php?id_disciplina=<?= $disciplina["cod_disciplina"] ?>" class="btn btn-outline-secondary mb-2">Editar disciplina</a>
 

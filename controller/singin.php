@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $statement = $user->iniciar_sesion($conn, $_POST['email']);
     $statement2 = $admin->iniciar_sesion($conn, $_POST["email"]);
 
+    // DUAL SESSION
     if ($statement->rowCount() == 0 && $statement2->rowCount() == 0) {
       header("Location: ../view/login.php?error_auth=1");
       // USER
