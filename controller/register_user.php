@@ -13,9 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ) {
     header("Location: ../view/register.php?error_none=1");
   } else {
-    $statement = $user->validar_correo($conn, $_POST["email"]);
 
-    if ($statement->rowCount() > 0) {
+    if ($user->validar_correo($conn, $_POST["email"])) {
       header("Location: ../view/register.php?error_mail=1");
     } else {
       $statement = $user->registrar_usuario(

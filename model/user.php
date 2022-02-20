@@ -27,7 +27,11 @@ class User
     $statement->bindParam(":email", $email);
     $statement->execute();
 
-    return $statement;
+    $statement2 = $conn->prepare("SELECT correo_empresa FROM empresa WHERE correo_empresa = :email");
+    $statement2->bindParam(":email", $email);
+    $statement2->execute();
+
+    return ($statement->rowCount() > 0 || $statement2->rowCount() > 0);
   }
 
   public function registrar_usuario($conn, $name, $surname, $email, $dir, $pass, $gen, $tel, $fn)

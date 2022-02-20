@@ -7,7 +7,7 @@ $(document).ready(function () {
       let dataCancha;
 
       $.ajax({
-        url: '../Controlador/ajaxData.php',
+        url: '../../controller/ajaxFilter.php',
         type: 'POST',
         async: true,
         data: {
@@ -16,13 +16,7 @@ $(document).ready(function () {
         },
         beforeSend: function () {},
         success: function (response) {
-          if (response != 'notData') {
-            const info = $.parseJSON(response);
-            dataCancha = info;
-          } else {
-            dataCancha = 'NO hay registro para mostrar';
-          }
-
+          dataCancha = $.parseJSON(response);
           $('#body-skill').html(dataCancha);
         },
         error: function (error) {
@@ -49,12 +43,11 @@ $(document).ready(function () {
           action,
           dataSearch,
           dtInicio,
-          dtFin
+          dtFin,
         },
         beforeSend: function () {},
         success: function (response) {
-
-          console.log("Se imprimio correctamente");
+          console.log('Se imprimio correctamente');
         },
         error: function (error) {
           console.log(error);
@@ -62,5 +55,4 @@ $(document).ready(function () {
       });
     });
   }
-
 });

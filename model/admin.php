@@ -55,6 +55,7 @@ class Admin
     return $statement;
   }
 
+  // Disciplina functions
   public function obtener_todas_disciplinas($conn, $id)
   {
     $disciplinas = $conn->query("SELECT * FROM disciplina WHERE empresa_cod_empresa = $id");
@@ -80,5 +81,26 @@ class Admin
     $statement->execute();
 
     return $statement->rowCount() > 0;
+  }
+
+  public function obtener_disciplina($conn, $id_disciplina)
+  {
+    $statement = $conn->prepare("SELECT * FROM disciplina WHERE cod_disciplina = :id_disciplina");
+    $statement->execute([":id_disciplina" => $id_disciplina]);
+    return $statement;
+  }
+
+  public function actualizar_disciplina($conn, $id, $name, $price)
+  {
+    try {
+      $statement = $conn->prepare("UPDATE disciplina SET nombre_disciplina = :name, precio_disciplina = :price WHERE cod_disciplina = :id");
+      $statement->execute([
+        ":id" => $id,
+        ":name" => $name,
+        ":price" => $price
+      ]);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage();
+    }
   }
 }
