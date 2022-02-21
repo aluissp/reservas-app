@@ -119,4 +119,20 @@ class Curt
       echo 'Excepción capturada: ',  $e->getMessage();
     }
   }
+
+  public function filtro_canchas($conn, $filtro)
+  {
+    try {
+      $sql = "SELECT cod_cancha, nombre_cancha, nombre_disciplina, obs_cancha, estado_cancha
+      FROM cancha c
+      INNER JOIN disciplina d ON c.Disciplina_cod_disciplina=d.cod_disciplina
+      WHERE nombre_cancha LIKE '%$filtro%' OR nombre_disciplina LIKE '%$filtro%'";
+
+      $canchas = $conn->query($sql);
+
+      return $canchas;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
 }

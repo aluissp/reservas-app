@@ -14,7 +14,7 @@ require "../../controller/court_admin.php";
     <p class="text-success h5">Buscar cancha</p>
     <div class="form-floating">
       <input type="text" class="form-control" id="txt-filter-court" placeholder="Filtrar por cancha o disciplina">
-      <label for="txt-filter">Filtrar por cancha o disciplina</label>
+      <label for="txt-filter-court">Filtrar por cancha o disciplina</label>
     </div>
     <p class="text-success h5 mt-3 mb-0">Añadir cancha</p>
   </div>
