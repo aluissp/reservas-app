@@ -42,12 +42,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $obs = $_POST["observation"];
       $dis = $_POST["disciplina"];
       $status = isset($_POST["status"]) ? 1 : 0;
-      
-      $admin->actualizar_disciplina($conn, $id, $name, $price);
+      $id_dis = $_POST["id_cancha"];
+
+      $ob_cancha->actualizar_cancha($conn, $name, $status, $obs, $id_dis, $dis);
       $_SESSION["flash"] = ["message" => "{$_POST['name']} actualizado correctamente."];
 
       header("Location: ./court.php");
       return;
+    }
+  } elseif (isset($_GET["delete"])) {
+
+    $id_cancha = $_POST["id_cancha"];
+
+    $statement = $ob_cancha->obtener_cancha($conn, $id_cancha);
+
+    if ($statement->rowCount() == 0) {
+      http_response_code(404);
+      echo ("HTTP 404 NOT FOUND");
+      return;
+    }
+
+    $cancha = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($ob_cancha->tiene_registros_cancha($conn, $id_cancha)) {
+      $error = "La cancha {$cancha['nombre_cancha']} ya tiene registros.";
+    } else {
+      $ob_cancha->eliminar_cancha($conn, $id_cancha);
+
+      $_SESSION["flash"] = ["message" => "{$cancha['nombre_cancha']} eliminado correctamente."];
+
+      header("Location: ./court.php");
     }
   }
 }

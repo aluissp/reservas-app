@@ -1,7 +1,7 @@
 <?php
 session_start();
-require "../../controller/court_admin.php";
 require "../partials/header.php";
+require "../../controller/court_admin.php";
 ?>
 
 <div class="container pt-4 p-3">
@@ -19,6 +19,7 @@ require "../partials/header.php";
     <p class="text-success h5 mt-3 mb-0">Añadir cancha</p>
   </div>
 
+  <!-- Formulario de canchas -->
   <form class="row" method="POST" id="form-court">
     <div class="col-6 p-0">
       <div class="form-floating mb-3">
@@ -45,6 +46,8 @@ require "../partials/header.php";
         <label class="form-check-label" for="sw-status">Estado de la cancha</label>
         <input class="form-check-input" type="checkbox" id="sw-status" name="status">
       </div>
+
+      <input type="hidden" name="id_cancha" value="">
       <button type="submit" class="btn btn-outline-success mt-4 col-5" id="add-court">Añadir</button>
       <button type="submit" class="btn btn-outline-info mt-4 col-5" id="update-court">Actualizar</button>
     </div>
@@ -77,7 +80,10 @@ require "../partials/header.php";
             <td><?= ($cancha['estado_cancha'] > 0) ? 'ocupado' : 'desocupado' ?></td>
             <td>
               <button class="btn btn-outline-warning col-5" id="<?= $cancha['cod_cancha'] ?>">Editar</button>
-              <button class="btn btn-outline-danger ml-1 col-5" id="<?= $cancha['cod_cancha'] ?>">Eliminar</button>
+              <form class="d-none" action="court.php?delete=1" method="POST" id="form-<?= $cancha['cod_cancha'] ?>">
+                <input value="<?= $cancha['cod_cancha'] ?>" name="id_cancha">
+              </form>
+              <button class="btn btn-outline-danger ml-1 col-5" form="form-<?= $cancha['cod_cancha'] ?>" type="submit">Eliminar</button>
             </td>
           </tr>
         <?php endforeach ?>

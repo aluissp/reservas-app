@@ -26,6 +26,10 @@ $(document).ready(function () {
     });
   }
 
+  if ($('#table-cancha').length) {
+
+  }
+
   // PDF RESERVAS
   if ($('#printReserva').length) {
     $('#printReserva').click(function () {

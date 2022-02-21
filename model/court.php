@@ -73,4 +73,50 @@ class Curt
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   }
+
+  public function actualizar_cancha($conn, $name, $status, $obs, $id, $id_dis)
+  {
+    try {
+      $statement = $conn->prepare("UPDATE cancha SET nombre_cancha = :name, estado_cancha = :status, obs_cancha = :obs, Disciplina_cod_disciplina = :id_dis WHERE cod_cancha = :id");
+      $statement->execute([
+        ":id" => $id,
+        ":name" => $name,
+        ":status" => $status,
+        ":obs" => $obs,
+        ":id_dis" => $id_dis
+      ]);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage();
+    }
+  }
+
+  public function eliminar_cancha($conn, $id)
+  {
+    try {
+      $conn
+        ->prepare("DELETE FROM cancha WHERE cod_cancha = :id")
+        ->execute([":id" => $id]);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage();
+    }
+  }
+
+  public function obtener_cancha($conn, $id_cancha)
+  {
+    $statement = $conn->prepare("SELECT * FROM cancha WHERE cod_cancha = :id_cancha");
+    $statement->execute([":id_cancha" => $id_cancha]);
+    return $statement;
+  }
+
+  public function tiene_registros_cancha($conn, $id)
+  {
+    try {
+      $statement = $conn->prepare("SELECT * FROM detalle_reserva WHERE cancha_cod_cancha  = :id LIMIT 1");
+      $statement->execute([":id" => $id]);
+
+      return ($statement->rowCount() > 0);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage();
+    }
+  }
 }
