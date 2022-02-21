@@ -13,7 +13,7 @@ require "../../controller/court_admin.php";
   <div class="row my-3">
     <p class="text-success h5">Buscar cancha</p>
     <div class="form-floating">
-      <input type="text" class="form-control" id="txt-filter" placeholder="Filtrar por cancha o disciplina">
+      <input type="text" class="form-control" id="txt-filter-court" placeholder="Filtrar por cancha o disciplina">
       <label for="txt-filter">Filtrar por cancha o disciplina</label>
     </div>
     <p class="text-success h5 mt-3 mb-0">Añadir cancha</p>
@@ -33,7 +33,7 @@ require "../../controller/court_admin.php";
     </div>
     <div class="col-6">
       <!-- <label for="exampleSelect1" class="form-label mt-4">Example select</label> -->
-      <select class='form-select' name='disciplina' required>
+      <select class='form-select' name='disciplina' required id="disciplinas">
         <option value=''>Elige una disciplina</option>
         <?php if ($todas_disciplinas->rowCount() == 0) : ?>
           <option value=''>No hay disciplinas</option>
@@ -47,7 +47,7 @@ require "../../controller/court_admin.php";
         <input class="form-check-input" type="checkbox" id="sw-status" name="status">
       </div>
 
-      <input type="hidden" name="id_cancha" value="">
+      <input type="hidden" name="id_cancha" value="" id="hidden_id_cancha">
       <button type="submit" class="btn btn-outline-success mt-4 col-5" id="add-court">Añadir</button>
       <button type="submit" class="btn btn-outline-info mt-4 col-5" id="update-court">Actualizar</button>
     </div>
