@@ -29,6 +29,20 @@ class Offer
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   }
+  public function obtener_promocion_filtrada($conn, $id_dis, $key_filter)
+  {
+    try {
+      $sql = "SELECT * FROM promocion
+      WHERE Disciplina_cod_disciplina = $id_dis
+      AND nombre_promocion LIKE '%$key_filter%'";
+
+      $canchas = $conn->query($sql);
+
+      return $canchas;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
 
   public function obtener_nombre_disciplina($conn, $id_dis)
   {
@@ -64,11 +78,13 @@ class Offer
       ORDER BY fechaf_promocion DESC LIMIT 1";
 
       $statement = $conn->query($sql)->fetch(PDO::FETCH_ASSOC);
+      if ($statement) {
+        $lastffin = strtotime($statement['fechaf_promocion']);
+        $newfinicio = strtotime($finicio);
+        return ($newfinicio > $lastffin);
+      }
 
-      $lastffin = strtotime($statement['fechaf_promocion']);
-      $newfinicio = strtotime($finicio);
-
-      return ($newfinicio > $lastffin);
+      return true;
     } catch (Exception $e) {
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
@@ -120,6 +136,19 @@ class Offer
           ":finicio" => $finicio,
           ":ffin" => $ffin,
           ":desc_p" => $desc_p,
+          ":idOffer" => $idOffer
+        ]);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
+  public function eliminar_promocion($conn, $idOffer)
+  {
+    try {
+      $sql = "DELETE FROM promocion WHERE cod_promocion = :idOffer";
+      $conn
+        ->prepare($sql)
+        ->execute([
           ":idOffer" => $idOffer
         ]);
     } catch (Exception $e) {

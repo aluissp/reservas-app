@@ -132,6 +132,24 @@ if ($_POST) {
     } else {
       echo json_encode('err', JSON_UNESCAPED_UNICODE);
     }
+  } elseif ($_POST['action'] == 'delete_offer') {
+    // data: [nameTxt, offerTxt, finicioTxt, ffinTxt, idDis]
+
+    $idDis = $_POST['id_dis'];
+    $idOffer = $_POST['id_offer'];
+
+    $offer->eliminar_promocion($conn, $idOffer);
+
+    $html = loadOffer($offer->obtener_promocion($conn, $idDis));
+    echo json_encode($html, JSON_UNESCAPED_UNICODE);
+  } elseif ($_POST['action'] == 'search_filter_offer') {
+    // data: [nameTxt, offerTxt, finicioTxt, ffinTxt, idDis]
+
+    $idDis = $_POST['id_dis'];
+    $searchData = $_POST['search_data'];
+
+    $html = loadOffer($offer->obtener_promocion_filtrada($conn, $idDis, $searchData));
+    echo json_encode($html, JSON_UNESCAPED_UNICODE);
   }
 }
 
@@ -159,7 +177,7 @@ function loadOffer($todas_promociones)
       <td>' . $promocion["fechaf_promocion"] . '</td>
       <td>' . $promocion["descuento_promocion"] . '</td>
       <td>
-        <button class="btn btn-outline-warning col-5" id="' . $promocion["cod_promocion"] . '">Editar</button>
+        <button class="btn btn-outline-warning col-5" id="' . $promocion["cod_promocion"] . '"  des="' . $promocion["descuento_promocion"] . '">Editar</button>
         <button class="btn btn-outline-danger ml-1 col-5" id="' . $promocion["cod_promocion"] . '">Eliminar</button>
       </td>
     </tr>';

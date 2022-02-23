@@ -184,7 +184,6 @@ $(document).ready(function () {
       }
     });
 
-
     $(updateButton).click(function () {
       let info = [
         $(nameTxt).val(),
@@ -213,7 +212,6 @@ $(document).ready(function () {
           },
           beforeSend: function () {},
           success: function (response) {
-            console.log(response);
             dataOffer = $.parseJSON(response);
             if (dataOffer === 'err') {
               $(error).text(
@@ -223,7 +221,7 @@ $(document).ready(function () {
               getDefaultInputOffer();
               $(tableBody).html(dataOffer);
               table_offer_event();
-              $(success).text('Se acutalizó correctamente la promoción.');
+              $(success).text('Se actualizó correctamente la promoción.');
             }
           },
           error: function (error) {
@@ -231,6 +229,32 @@ $(document).ready(function () {
           },
         });
       }
+    });
+
+    $(filterTxt).keyup(function () {
+      const search_data = $(filterTxt).val();
+      const id_dis = $(idDis).val();
+
+      $.ajax({
+        url: '../../controller/ajaxFilter.php',
+        type: 'POST',
+        async: true,
+        data: {
+          action: 'search_filter_offer',
+          search_data,
+          id_dis,
+        },
+        beforeSend: function () {},
+        success: function (response) {
+          dataOffer = $.parseJSON(response);
+          getDefaultInputOffer();
+          $(tableBody).html(dataOffer);
+          table_offer_event();
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
     });
   }
 
@@ -327,7 +351,7 @@ $(document).ready(function () {
   }
 
   // Add all event for table offer
-  function offer_event() {
+  function table_offer_event() {
     const tableBody = document.getElementById('table-offer');
 
     // Inputs
@@ -339,21 +363,55 @@ $(document).ready(function () {
     const idDis = document.getElementById('id_dis');
 
     for (const row of tableBody.children) {
-      const update = row.children[4].children[0];
-      // console.log($(update).val());
-      console.log(update);
-      $(update).click(() => {
-        $(idOffer).val($(update).attr('id'));
-        $(offerTxt).val($(update).attr('des'));
-        if (
-          row.children[2].innerText !== '' &&
-          row.children[1].innerText !== ''
-        ) {
-          $(ffinTxt).val(row.children[2].innerText);
-          $(finicioTxt).val(row.children[1].innerText);
-        }
-        $(nameTxt).val(row.children[0].innerText);
-      });
+      if (row.children[4]) {
+        const update = row.children[4].children[0];
+        const eliminate = row.children[4].children[1];
+
+        // console.log($(update).val());
+        // console.log(update);
+        $(update).click(() => {
+          $(idOffer).val($(update).attr('id'));
+          // console.log($(update).attr('des'));
+          $(offerTxt).val($(update).attr('des'));
+          if (
+            row.children[2].innerText !== '' &&
+            row.children[1].innerText !== ''
+          ) {
+            $(ffinTxt).val(row.children[2].innerText);
+            $(finicioTxt).val(row.children[1].innerText);
+          }
+          $(nameTxt).val(row.children[0].innerText);
+        });
+        $(eliminate).click(() => {
+          const id_offer = $(eliminate).attr('id');
+          const id_dis = $(idDis).val();
+          $.ajax({
+            url: '../../controller/ajaxFilter.php',
+            type: 'POST',
+            async: true,
+            data: {
+              action: 'delete_offer',
+              id_offer,
+              id_dis,
+            },
+            beforeSend: function () {},
+            success: function (response) {
+              dataOffer = $.parseJSON(response);
+              if (dataOffer === 'err') {
+                $(error).text('Ocurrio un error al eliminar la promoción.');
+              } else {
+                getDefaultInputOffer();
+                $(tableBody).html(dataOffer);
+                table_offer_event();
+                $(success).text('Se eliminó correctamente la promoción.');
+              }
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
+        });
+      }
     }
   }
 });
