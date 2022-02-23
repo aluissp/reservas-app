@@ -53,12 +53,14 @@
         <?php if (isset($_SESSION["user"])) : ?>
           <div class="p-2 text-white">
             <?= $_SESSION["user"]["correo_cliente"] ?>
+            <i class="fa-solid fa-envelope"></i>
           </div>
         <?php endif ?>
 
         <?php if (isset($_SESSION["admin"])) : ?>
           <div class="p-2 text-white">
             <?= $_SESSION["admin"]["correo_empresa"] ?>
+            <i class="fa-solid fa-envelope"></i>
           </div>
         <?php endif ?>
       </div>

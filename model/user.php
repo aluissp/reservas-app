@@ -60,7 +60,7 @@ class User
     return $statement;
   }
 
-  public function obtener_todas_reservas($conn, $id)
+  public function obtener_mis_reservas($conn, $id)
   {
     $reservas = $conn->query("SELECT * FROM reserva WHERE cliente_cod_cliente = $id");
     return $reservas;
@@ -73,5 +73,20 @@ class User
     $statement->execute();
 
     return $statement;
+  }
+
+  public function obtener_promociones_cancha($conn)
+  {
+    try {
+      $promos = $conn->query("SELECT cod_cancha, nombre_cancha, obs_cancha, nombre_disciplina, precio_disciplina, descuento_promocion, nombre_promocion
+      FROM cancha c INNER JOIN disciplina d ON c.Disciplina_cod_disciplina = d.cod_disciplina
+      INNER JOIN promocion p ON p.Disciplina_cod_disciplina = d.cod_disciplina
+      WHERE c.estado_cancha = 0 AND p.fechaf_promocion >= CURRENT_DATE
+      GROUP BY nombre_cancha");
+
+      return $promos;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
   }
 }
