@@ -3,7 +3,9 @@
 if ($_POST) {
   require_once("../database.php");
   require_once("../model/court.php");
+  require_once("../model/offer.php");
   $court = new Curt();
+  $offer = new Offer();
 
   // Filtro de disciplinas
   if ($_POST['action'] == 'filter-discipline') {
@@ -94,5 +96,74 @@ if ($_POST) {
       }
       echo json_encode($html, JSON_UNESCAPED_UNICODE);
     }
+    // add offer
+  } elseif ($_POST['action'] == 'add_offer') {
+    // data: [nameTxt, offerTxt, finicioTxt, ffinTxt, idDis]
+    $data = json_decode($_POST['info']);
+    $name = $data[0];
+    $desc = $data[1];
+    $finicio = $data[2];
+    $ffin = $data[3];
+    $idDis = $data[4];
+
+    if ($offer->validar_fecha_promocion($conn, $idDis, $finicio)) {
+      $offer->registrar_promocion($conn, $name, $finicio, $ffin, $desc, $idDis);
+
+      $html = loadOffer($offer->obtener_promocion($conn, $idDis));
+      echo json_encode($html, JSON_UNESCAPED_UNICODE);
+    } else {
+      echo json_encode('err', JSON_UNESCAPED_UNICODE);
+    }
+  } elseif ($_POST['action'] == 'update_offer') {
+    // data: [nameTxt, offerTxt, finicioTxt, ffinTxt, idDis]
+    $data = json_decode($_POST['info']);
+    $name = $data[0];
+    $desc = $data[1];
+    $finicio = $data[2];
+    $ffin = $data[3];
+    $idDis = $data[4];
+    $idOffer = $data[5];
+
+    if ($offer->validar_fecha_promocion_actualizar($conn, $idDis, $finicio, $ffin, $idOffer)) {
+      $offer->actualizar_promocion($conn, $name, $finicio, $ffin, $desc, $idOffer);
+
+      $html = loadOffer($offer->obtener_promocion($conn, $idDis));
+      echo json_encode($html, JSON_UNESCAPED_UNICODE);
+    } else {
+      echo json_encode('err', JSON_UNESCAPED_UNICODE);
+    }
   }
+}
+
+function loadOffer($todas_promociones)
+{
+  $html = '';
+  if ($todas_promociones->rowCount() == 0) {
+    $html = '
+    <tr>
+      <td colspan=5>
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No hay resultados</p>
+            <a>Agrega uno!</a>
+          </div>
+        </div>
+      </td>
+    </tr>';
+  }
+  foreach ($todas_promociones as $promocion) {
+    $html .= '
+  <tr>
+      <th>' . $promocion["nombre_promocion"] . '</th>
+      <td>' . $promocion["fechai_promocion"] . '</td>
+      <td>' . $promocion["fechaf_promocion"] . '</td>
+      <td>' . $promocion["descuento_promocion"] . '</td>
+      <td>
+        <button class="btn btn-outline-warning col-5" id="' . $promocion["cod_promocion"] . '">Editar</button>
+        <button class="btn btn-outline-danger ml-1 col-5" id="' . $promocion["cod_promocion"] . '">Eliminar</button>
+      </td>
+    </tr>';
+  }
+
+  return $html;
 }

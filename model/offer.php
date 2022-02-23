@@ -36,89 +36,92 @@ class Offer
     return $disciplina;
   }
 
-
-
-  public function validar_cancha($conn, $name)
+  public function registrar_promocion($conn, $name, $finicio, $ffin, $desc_p, $id_dis)
   {
     try {
-      $statement = $conn->prepare("SELECT nombre_cancha FROM cancha WHERE nombre_cancha = :nombre");
-      $statement->bindParam(":nombre", $name);
-      $statement->execute();
-
-      return $statement->rowCount() > 0;
-    } catch (Exception $e) {
-      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-    }
-  }
-
-  public function registrar_cancha($conn, $name, $status, $obs, $id_disciplina)
-  {
-    try {
-      $sql = "INSERT INTO cancha (nombre_cancha, estado_cancha, obs_cancha, Disciplina_cod_disciplina) VALUES (:name, :status, :obs, :id_disciplina)";
+      $sql = "INSERT INTO promocion (nombre_promocion, fechai_promocion,
+      fechaf_promocion, descuento_promocion, Disciplina_cod_disciplina)
+      VALUES (:name, :finicio, :ffin, :desc_p, :id_dis)";
       $conn
         ->prepare($sql)
         ->execute([
           ":name" => $name,
-          ":status" => $status,
-          ":obs" => $obs,
-          ":id_disciplina" => $id_disciplina
+          ":finicio" => $finicio,
+          ":ffin" => $ffin,
+          ":desc_p" => $desc_p,
+          ":id_dis" => $id_dis
         ]);
     } catch (Exception $e) {
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   }
 
-  public function actualizar_cancha($conn, $name, $status, $obs, $id, $id_dis)
+  public function validar_fecha_promocion($conn, $id_dis, $finicio)
   {
     try {
-      $statement = $conn->prepare("UPDATE cancha SET nombre_cancha = :name, estado_cancha = :status, obs_cancha = :obs, Disciplina_cod_disciplina = :id_dis WHERE cod_cancha = :id");
-      $statement->execute([
-        ":id" => $id,
-        ":name" => $name,
-        ":status" => $status,
-        ":obs" => $obs,
-        ":id_dis" => $id_dis
-      ]);
+      $sql = "SELECT fechaf_promocion FROM promocion
+      WHERE Disciplina_cod_disciplina = $id_dis
+      ORDER BY fechaf_promocion DESC LIMIT 1";
+
+      $statement = $conn->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+      $lastffin = strtotime($statement['fechaf_promocion']);
+      $newfinicio = strtotime($finicio);
+
+      return ($newfinicio > $lastffin);
     } catch (Exception $e) {
-      echo 'Excepción capturada: ',  $e->getMessage();
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
+  public function validar_fecha_promocion_actualizar($conn, $id_dis, $finicio, $ffin, $id_offer)
+  {
+    try {
+      $val = false;
+
+      $sql1 = "SELECT fechaf_promocion FROM promocion
+      WHERE Disciplina_cod_disciplina = $id_dis
+      ORDER BY fechaf_promocion DESC LIMIT 1";
+
+      $statement1 = $conn->query($sql1)->fetch(PDO::FETCH_ASSOC);
+
+      $sql2 = "SELECT fechai_promocion, fechaf_promocion FROM promocion
+      WHERE Disciplina_cod_disciplina = $id_dis AND cod_promocion = $id_offer LIMIT 1";
+
+      $statement2 = $conn->query($sql2)->fetch(PDO::FETCH_ASSOC);
+
+      if (
+        strtotime($finicio) == $statement2["fechai_promocion"] &&
+        strtotime($ffin) == $statement2["fechaf_promocion"]
+      ) {
+        $val = true;
+      } else {
+        $lastffin = strtotime($statement1['fechaf_promocion']);
+        $newfinicio = strtotime($finicio);
+        $val = ($newfinicio > $lastffin);
+      }
+
+
+      return $val;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   }
 
-  public function eliminar_cancha($conn, $id)
+  public function actualizar_promocion($conn, $name, $finicio, $ffin, $desc_p, $idOffer)
   {
     try {
+      $sql = "UPDATE promocion SET nombre_promocion = :name, fechai_promocion = :finicio,
+      fechaf_promocion = :ffin, descuento_promocion = :desc_p
+      WHERE cod_promocion = :idOffer";
       $conn
-        ->prepare("DELETE FROM cancha WHERE cod_cancha = :id")
-        ->execute([":id" => $id]);
-    } catch (Exception $e) {
-      echo 'Excepción capturada: ',  $e->getMessage();
-    }
-  }
-
-
-  public function tiene_registros_cancha($conn, $id)
-  {
-    try {
-      $statement = $conn->prepare("SELECT * FROM detalle_reserva WHERE cancha_cod_cancha  = :id LIMIT 1");
-      $statement->execute([":id" => $id]);
-
-      return ($statement->rowCount() > 0);
-    } catch (Exception $e) {
-      echo 'Excepción capturada: ',  $e->getMessage();
-    }
-  }
-
-  public function filtro_canchas($conn, $filtro)
-  {
-    try {
-      $sql = "SELECT cod_cancha, nombre_cancha, nombre_disciplina, obs_cancha, estado_cancha
-      FROM cancha c
-      INNER JOIN disciplina d ON c.Disciplina_cod_disciplina=d.cod_disciplina
-      WHERE nombre_cancha LIKE '%$filtro%' OR nombre_disciplina LIKE '%$filtro%'";
-
-      $canchas = $conn->query($sql);
-
-      return $canchas;
+        ->prepare($sql)
+        ->execute([
+          ":name" => $name,
+          ":finicio" => $finicio,
+          ":ffin" => $ffin,
+          ":desc_p" => $desc_p,
+          ":idOffer" => $idOffer
+        ]);
     } catch (Exception $e) {
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
