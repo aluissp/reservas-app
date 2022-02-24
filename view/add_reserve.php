@@ -30,9 +30,10 @@ require "../controller/reserva_user.php";
               <p class="m-2 text-success">Fecha disponible desde:
                 <?= $fecha["ultima_fecha_reserva"] ?> en adelante.</p>
             <?php endif ?>
-            <form method="POST" action="add_reserve.php">
+            <form method="POST" action="add_reserve.php?id=<?= $id_cancha ?>">
               <input value="<?= $cancha["cod_cancha"] ?>" type="hidden" name="id_cancha">
               <input value="get-reserve" type="hidden" name="action">
+              <input value="<?= $cancha["precio_disciplina"] - ($cancha["precio_disciplina"] * ($cancha["descuento_promocion"]) / 100) ?>" type="hidden" name="precio">
               <input value="yes" type="hidden" name="promo">
               <div class="d-flex justify-content-center">
                 <p class="m-2 text-info text-center col-6">Elige tu fecha de reserva.
@@ -57,9 +58,10 @@ require "../controller/reserva_user.php";
                 <?= $fecha["ultima_fecha_reserva"] ?> en adelante.</p>
             <?php endif ?>
 
-            <form method="POST" action="add_reserve.php">
+            <form method="POST" action="add_reserve.php?id=<?= $id_cancha ?>">
               <input value="<?= $cancha["cod_cancha"] ?>" type="hidden" name="id_cancha">
               <input value="get-reserve" type="hidden" name="action">
+              <input value="<?= $cancha["precio_disciplina"] ?>" type="hidden" name="precio">
               <input value="no" type="hidden" name="promo">
               <div class="d-flex justify-content-center">
                 <p class="m-2 text-info text-center col-6">Elige tu fecha de reserva.

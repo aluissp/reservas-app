@@ -62,7 +62,12 @@ class User
 
   public function obtener_mis_reservas($conn, $id)
   {
-    $reservas = $conn->query("SELECT * FROM reserva WHERE cliente_cod_cliente = $id");
+    $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad
+    FROM reserva r INNER JOIN detalle_reserva dt ON r.cod_reserva = dt.reserva_cod_reserva
+    INNER JOIN cancha c ON c.cod_cancha = dt.cancha_cod_cancha
+    INNER JOIN disciplina d ON d.cod_disciplina = c.Disciplina_cod_disciplina
+    WHERE R.cliente_cod_cliente = $id
+    ORDER BY fecha_reserva DESC");
     return $reservas;
   }
 
@@ -186,6 +191,30 @@ class User
       }
 
       return $statement;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ', $e->getMessage(), "\n";
+    }
+  }
+
+  public function registrar_reserva($conn, $id_cancha, $id_user, $fecha_reserva, $precio)
+  {
+    try {
+      $statement = $conn->prepare("INSERT INTO reserva(fecha_reserva, estado_reserva, cliente_cod_cliente)
+      VALUES(:fecha_reserva, '1', :id_user)");
+      $statement->execute([
+        ":fecha_reserva" => $fecha_reserva,
+        ":id_user" => $id_user
+      ]);
+
+      $statement = $conn->query("SELECT * FROM reserva
+      WHERE cliente_cod_cliente = $id_user
+      ORDER BY cod_reserva DESC LIMIT 1");
+
+      $statement = $statement->fetch(PDO::FETCH_ASSOC);
+      $id_res = $statement["cod_reserva"];
+
+      $conn->query("INSERT INTO detalle_reserva(cancha_cod_cancha, reserva_cod_reserva, cantidad, precio)
+      VALUES($id_cancha, $id_res, '1', $precio)");
     } catch (Exception $e) {
       echo 'Excepción capturada: ', $e->getMessage(), "\n";
     }
