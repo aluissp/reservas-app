@@ -134,4 +134,60 @@ class User
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   }
+
+  public function obtener_cancha($conn, $id_cancha)
+  {
+    try {
+      $statement = $conn->query("SELECT cod_cancha, nombre_cancha, obs_cancha, nombre_disciplina, precio_disciplina, descuento_promocion, nombre_promocion
+      FROM cancha c INNER JOIN disciplina d ON c.Disciplina_cod_disciplina = d.cod_disciplina
+      INNER JOIN promocion p ON p.Disciplina_cod_disciplina = d.cod_disciplina
+      WHERE c.estado_cancha = 0 AND p.fechaf_promocion >= CURRENT_DATE AND cod_cancha = $id_cancha
+      GROUP BY nombre_cancha");
+
+      $statement = $statement->fetch(PDO::FETCH_ASSOC);
+
+      if (!isset($statement['descuento_promocion'])) {
+        $statement = $conn->query("SELECT cod_cancha, nombre_cancha, obs_cancha, nombre_disciplina, precio_disciplina
+        FROM cancha c INNER JOIN disciplina d
+        ON c.Disciplina_cod_disciplina = d.cod_disciplina
+        WHERE c.estado_cancha = 0 AND cod_cancha = $id_cancha");
+        $statement = $statement->fetch(PDO::FETCH_ASSOC);
+      }
+
+      return $statement;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ', $e->getMessage(), "\n";
+    }
+  }
+
+  public function obtener_fecha($conn, $id_cancha)
+  {
+    try {
+      $statement = $conn->query("SELECT fechai_promocion, fechaf_promocion
+      FROM cancha c INNER JOIN disciplina d ON c.Disciplina_cod_disciplina = d.cod_disciplina
+      INNER JOIN promocion p ON p.Disciplina_cod_disciplina = d.cod_disciplina
+      WHERE c.cod_cancha = $id_cancha AND fechaf_promocion >= CURRENT_DATE LIMIT 1");
+
+      $statement = $statement->fetch(PDO::FETCH_ASSOC);
+
+      if (!isset($statement['fechaf_promocion'])) {
+        $statement = array();
+      }
+      $statement2 = $conn->query("SELECT fecha_reserva
+        FROM cancha c INNER JOIN detalle_reserva dt ON c.cod_cancha = dt.cancha_cod_cancha
+        INNER JOIN reserva r ON r.cod_reserva = dt.reserva_cod_reserva
+        WHERE c.cod_cancha = $id_cancha
+        ORDER BY fecha_reserva DESC
+        LIMIT 1");
+      $statement2 = $statement2->fetch(PDO::FETCH_ASSOC);
+
+      if (isset($statement2['fecha_reserva'])) {
+        $statement["ultima_fecha_reserva"] = $statement2["fecha_reserva"];
+      }
+
+      return $statement;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ', $e->getMessage(), "\n";
+    }
+  }
 }

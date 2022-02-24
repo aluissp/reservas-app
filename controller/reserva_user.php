@@ -10,18 +10,18 @@ if (!isset($_SESSION["user"])) {
   return;
 }
 
-// $reservas = $user->obtener_todas_reservas($conn, $_SESSION["user"]["cod_cliente"]);
+$error = null;
+$id_cancha = $_GET['id'];
+
+// $reserva = $user->obtener_todas_reservas($conn, $_SESSION["user"]["cod_cliente"]);
+$cancha = $user->obtener_cancha($conn, $id_cancha);
+$fecha = $user->obtener_fecha($conn, $id_cancha);
+// $cancha = $cancha->fetch(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if (empty($_POST["name"]) || empty($_POST["phone_number"])) {
-    $error = "Please fill all the fields.";
-  } else if (strlen($_POST["phone_number"]) < 9) {
-    $error = "Phone number must be at least 9 characters.";
-  } else {
-    $name = $_POST["name"];
-    $phoneNumber = $_POST["phone_number"];
-    $_SESSION["flash"] = ["message" => "Contact {$_POST['name']} added."];
-
-    return;
+  if ($_POST['action'] == 'get-reserve') {
+    if ($_POST['promo'] == 'no') {
+      
+    }
   }
 }
