@@ -10,6 +10,7 @@ require "../controller/user_my_reserve.php";
     <p class="text-success h5">Buscar reserva</p>
     <div class="form-floating">
       <input type="text" class="form-control" id="txt-filter" placeholder="Filtrar reserva">
+      <input type="hidden" id="mi-id" value="<?= $_SESSION['user']['cod_cliente'] ?>">
       <label for="txt-filter-court">Filtrar reserva</label>
     </div>
   </div>
@@ -27,7 +28,7 @@ require "../controller/user_my_reserve.php";
           <th scope="col">Acciones</th>
         </tr>
       </thead>
-      <tbody id="table-cancha">
+      <tbody id="table-reserva">
         <?php if ($mis_reservas->rowCount() == 0) : ?>
           <tr>
             <td colspan=7>
@@ -64,5 +65,7 @@ require "../controller/user_my_reserve.php";
   </div>
 
 </div>
+
+<script src="../controller/user_ajax.js"></script>
 
 <?php require "partials/footer.php" ?>

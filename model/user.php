@@ -70,6 +70,17 @@ class User
     ORDER BY fecha_reserva DESC");
     return $reservas;
   }
+  public function obtener_mis_reservas_filtrado($conn, $id, $filtro)
+  {
+    $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad
+    FROM reserva r INNER JOIN detalle_reserva dt ON r.cod_reserva = dt.reserva_cod_reserva
+    INNER JOIN cancha c ON c.cod_cancha = dt.cancha_cod_cancha
+    INNER JOIN disciplina d ON d.cod_disciplina = c.Disciplina_cod_disciplina
+    WHERE R.cliente_cod_cliente = $id
+    AND (nombre_cancha LIKE '%$filtro%' OR nombre_disciplina LIKE '%$filtro%')
+    ORDER BY fecha_reserva DESC");
+    return $reservas;
+  }
 
   public function iniciar_sesion($conn, $email)
   {

@@ -68,5 +68,46 @@ if ($_POST) {
       }
       echo json_encode($html, JSON_UNESCAPED_UNICODE);
     }
+  } elseif ($_POST['action'] == 'filter-my-reserve') {
+    $searchData = $_POST['dataSearch'];
+    $miId = $_POST['miId'];
+
+    $mi_reserva = $user->obtener_mis_reservas_filtrado($conn, $miId, $searchData);
+    $html = '';
+
+    if ($mi_reserva->rowCount() == 0) {
+      $html .= '<tr>
+      <td colspan=7>
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No hay reservas registradas todavía</p>
+            <a>Agrega uno!</a>
+          </div>
+        </div>
+      </td>
+    </tr>';
+      echo json_encode($html, JSON_UNESCAPED_UNICODE);
+    } else {
+
+      foreach ($mi_reserva as $reserva) {
+        $html .= '<tr>
+        <th>' . $reserva["nombre_cancha"] . '</th>
+        <td>' . $reserva["nombre_disciplina"] . '</td>
+        <td>' . $reserva["fecha_reserva"] . '</td>
+        <td>' . $reserva["precio"] . ' $</td>
+        <td>' . $reserva["cantidad"] . '</td>
+        <td>' . (($reserva["estado_reserva"] > 0) ? "ocupado" : "desocupado") . '</td>
+        <td>
+          <form class="d-none" action="" method="POST" id="form-' . $reserva["cod_reserva"] . '">
+            <input value="' . $reserva["cod_reserva"] . '" name="id_reserva">
+          </form>
+          <button class="btn btn-outline-danger ml-1" form="form-' . $reserva["cod_reserva"] . '" type="submit">Imprimir
+            <i class="fa-solid fa-file-pdf"></i>
+          </button>
+        </td>
+      </tr>';
+      }
+      echo json_encode($html, JSON_UNESCAPED_UNICODE);
+    }
   }
 }
