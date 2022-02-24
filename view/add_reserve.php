@@ -40,6 +40,16 @@ require "../controller/reserva_user.php";
                   <input class="form-control" type="date" name="fecha" required>
                 </p>
               </div>
+              <div class="d-flex justify-content-center">
+                <p class="m-2 text-info text-center col-6">Hora de inicio.
+                  <input class="form-control" type="time" name="hora_inicio" required>
+                </p>
+              </div>
+              <div class="d-flex justify-content-center">
+                <p class="m-2 text-info text-center col-6">Hora fin.
+                  <input class="form-control" type="time" name="hora_fin" required>
+                </p>
+              </div>
               <div class="mb-3 row justify-content-center">
                 <div class="col-md-6 offset-md-4">
                   <button type="submit" class="btn btn-primary">Reservar</button>
@@ -66,6 +76,17 @@ require "../controller/reserva_user.php";
               <div class="d-flex justify-content-center">
                 <p class="m-2 text-info text-center col-6">Elige tu fecha de reserva.
                   <input class="form-control" type="date" name="fecha" required>
+                </p>
+
+              </div>
+              <div class="d-flex justify-content-center">
+                <p class="m-2 text-info text-center col-6">Hora de inicio.
+                  <input class="form-control" type="time" name="hora_inicio" required>
+                </p>
+              </div>
+              <div class="d-flex justify-content-center">
+                <p class="m-2 text-info text-center col-6">Hora fin.
+                  <input class="form-control" type="time" name="hora_fin" required>
                 </p>
               </div>
               <div class="mb-3 row justify-content-center">

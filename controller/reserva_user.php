@@ -39,7 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
       }
 
-      $user->registrar_reserva($conn, $id_cancha, $_SESSION['user']['cod_cliente'], $fecha_reserva, $precio);
+      // Horas
+      $hora_inicio = $_POST["hora_inicio"];
+      $hora_fin = $_POST["hora_fin"];
+
+      $user->registrar_reserva($conn, $id_cancha, $_SESSION['user']['cod_cliente'], $fecha_reserva, $precio, $hora_inicio, $hora_fin);
 
       $_SESSION["flash"] = ["message" => "Cancha reservada correctamente."];
 
@@ -64,7 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
       }
 
-      $user->registrar_reserva($conn, $id_cancha, $_SESSION['user']['cod_cliente'], $fecha_reserva, $precio);
+      // Horas
+      $hora_inicio = $_POST["hora_inicio"];
+      $hora_fin = $_POST["hora_fin"];
+
+      $user->registrar_reserva($conn, $id_cancha, $_SESSION['user']['cod_cliente'], $fecha_reserva, $precio, $hora_inicio, $hora_fin);
+
 
       $_SESSION["flash"] = ["message" => "Cancha reservada correctamente."];
 

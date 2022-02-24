@@ -80,7 +80,7 @@ if ($_POST) {
       <td colspan=7>
         <div class="col-md-4 mx-auto">
           <div class="card card-body text-center">
-            <p>No hay reservas registradas todavía</p>
+            <p>No se encontró resultados</p>
             <a>Agrega uno!</a>
           </div>
         </div>

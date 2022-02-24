@@ -207,14 +207,16 @@ class User
     }
   }
 
-  public function registrar_reserva($conn, $id_cancha, $id_user, $fecha_reserva, $precio)
+  public function registrar_reserva($conn, $id_cancha, $id_user, $fecha_reserva, $precio, $hora_inicio, $hora_fin)
   {
     try {
-      $statement = $conn->prepare("INSERT INTO reserva(fecha_reserva, estado_reserva, cliente_cod_cliente)
-      VALUES(:fecha_reserva, '1', :id_user)");
+      $statement = $conn->prepare("INSERT INTO reserva(fecha_reserva, estado_reserva, cliente_cod_cliente, hora_inicio, hora_fin)
+      VALUES(:fecha_reserva, '1', :id_user, :hora_inicio, :hora_fin)");
       $statement->execute([
         ":fecha_reserva" => $fecha_reserva,
-        ":id_user" => $id_user
+        ":id_user" => $id_user,
+        ":hora_inicio" => $hora_inicio,
+        ":hora_fin" => $hora_fin
       ]);
 
       $statement = $conn->query("SELECT * FROM reserva
