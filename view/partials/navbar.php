@@ -15,7 +15,7 @@
               <a class="nav-link" href="/reservas-app/view/home.php">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/reservas-app/view/add_reserve.php">Añadir reserva</a>
+              <a class="nav-link" href="/reservas-app/view/my_reserve.php">Mis reservas</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/reservas-app/view/logout.php">Cerrar sesión</a>

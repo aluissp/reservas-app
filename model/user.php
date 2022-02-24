@@ -89,4 +89,49 @@ class User
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   }
+  public function obtener_promociones_cancha_filtrado($conn, $filtro)
+  {
+    try {
+      $promos = $conn->query("SELECT cod_cancha, nombre_cancha, obs_cancha, nombre_disciplina, precio_disciplina, descuento_promocion, nombre_promocion
+      FROM cancha c INNER JOIN disciplina d ON c.Disciplina_cod_disciplina = d.cod_disciplina
+      INNER JOIN promocion p ON p.Disciplina_cod_disciplina = d.cod_disciplina
+      WHERE c.estado_cancha = 0 AND p.fechaf_promocion >= CURRENT_DATE
+      AND (nombre_cancha LIKE '%$filtro%' OR nombre_disciplina LIKE '%$filtro%'
+           OR precio_disciplina LIKE '%$filtro%' OR descuento_promocion LIKE '%$filtro%')
+      GROUP BY nombre_cancha");
+
+      return $promos;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
+
+  public function obtener_todas_canchas_disponibles($conn)
+  {
+    try {
+      $promos = $conn->query("SELECT cod_cancha, nombre_cancha, obs_cancha, nombre_disciplina, precio_disciplina
+      FROM cancha c INNER JOIN disciplina d
+      ON c.Disciplina_cod_disciplina = d.cod_disciplina
+      WHERE c.estado_cancha = 0");
+
+      return $promos;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
+
+  public function obtener_todas_canchas_disponibles_filtrado($conn, $filtro)
+  {
+    try {
+      $canchas = $conn->query("SELECT cod_cancha, nombre_cancha, obs_cancha, nombre_disciplina, precio_disciplina
+      FROM cancha c INNER JOIN disciplina d
+      ON c.Disciplina_cod_disciplina = d.cod_disciplina
+      WHERE c.estado_cancha = 0
+      AND (nombre_cancha LIKE '%$filtro%' OR precio_disciplina LIKE '%$filtro%')");
+
+      return $canchas;
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+    }
+  }
 }
