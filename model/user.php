@@ -232,4 +232,18 @@ class User
       echo 'Excepción capturada: ', $e->getMessage(), "\n";
     }
   }
+
+  public function obtener_mi_reserva_pdf($conn, $id_user,  $id_reserva)
+  {
+    try {
+      $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, obs_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad, hora_inicio, hora_fin, fecha_contrato_reserva
+    FROM reserva r INNER JOIN detalle_reserva dt ON r.cod_reserva = dt.reserva_cod_reserva
+    INNER JOIN cancha c ON c.cod_cancha = dt.cancha_cod_cancha
+    INNER JOIN disciplina d ON d.cod_disciplina = c.Disciplina_cod_disciplina
+    WHERE r.cliente_cod_cliente = $id_user AND r.cod_reserva = $id_reserva");
+      return $reservas->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      echo 'Excepción capturada: ', $e->getMessage(), "\n";
+    }
+  }
 }

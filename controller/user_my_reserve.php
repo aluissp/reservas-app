@@ -10,9 +10,3 @@ if (!isset($_SESSION["user"])) {
 }
 
 $mis_reservas = $user->obtener_mis_reservas($conn, $_SESSION['user']['cod_cliente']);
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if ($_POST['action'] == 'get-reserve') {
-
-  }
-}

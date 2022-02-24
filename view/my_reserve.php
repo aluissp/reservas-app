@@ -53,7 +53,7 @@ require "../controller/user_my_reserve.php";
             <td><?= $reserva['hora_inicio'] ?> - <?= $reserva['hora_fin'] ?></td>
             <td><?= $reserva['fecha_contrato_reserva'] ?></td>
             <td>
-              <form class="d-none" action="" method="POST" id="form-<?= $reserva['cod_reserva'] ?>">
+              <form class="d-none" action="../reporte.php" method="POST" id="form-<?= $reserva['cod_reserva'] ?>">
                 <input value="<?= $reserva['cod_reserva'] ?>" name="id_reserva">
               </form>
               <button class="btn btn-outline-danger ml-1" form="form-<?= $reserva['cod_reserva'] ?>" type="submit">Imprimir
