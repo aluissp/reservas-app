@@ -62,7 +62,7 @@ class User
 
   public function obtener_mis_reservas($conn, $id)
   {
-    $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad
+    $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad, hora_inicio, hora_fin, fecha_contrato_reserva
     FROM reserva r INNER JOIN detalle_reserva dt ON r.cod_reserva = dt.reserva_cod_reserva
     INNER JOIN cancha c ON c.cod_cancha = dt.cancha_cod_cancha
     INNER JOIN disciplina d ON d.cod_disciplina = c.Disciplina_cod_disciplina
@@ -72,7 +72,7 @@ class User
   }
   public function obtener_mis_reservas_filtrado($conn, $id, $filtro)
   {
-    $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad
+    $reservas = $conn->query("SELECT cod_reserva, nombre_cancha, nombre_disciplina, fecha_reserva, estado_reserva, precio, cantidad, hora_inicio, hora_fin, fecha_contrato_reserva
     FROM reserva r INNER JOIN detalle_reserva dt ON r.cod_reserva = dt.reserva_cod_reserva
     INNER JOIN cancha c ON c.cod_cancha = dt.cancha_cod_cancha
     INNER JOIN disciplina d ON d.cod_disciplina = c.Disciplina_cod_disciplina

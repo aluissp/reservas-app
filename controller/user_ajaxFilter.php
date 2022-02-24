@@ -95,8 +95,9 @@ if ($_POST) {
         <td>' . $reserva["nombre_disciplina"] . '</td>
         <td>' . $reserva["fecha_reserva"] . '</td>
         <td>' . $reserva["precio"] . ' $</td>
-        <td>' . $reserva["cantidad"] . '</td>
         <td>' . (($reserva["estado_reserva"] > 0) ? "ocupado" : "desocupado") . '</td>
+        <td>' . $reserva["hora_inicio"] . ' - ' . $reserva["hora_fin"] . '</td>
+        <td>' . $reserva["fecha_contrato_reserva"] . '</td>
         <td>
           <form class="d-none" action="" method="POST" id="form-' . $reserva["cod_reserva"] . '">
             <input value="' . $reserva["cod_reserva"] . '" name="id_reserva">
