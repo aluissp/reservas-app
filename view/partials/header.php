@@ -25,6 +25,8 @@
     <script defer src="/reservas-app/static/js/welcome.js"></script>
   <?php endif ?>
 
+  <link rel="icon" href="/reservas-app/static/img/logo.png">
+
   <title>Reservas App</title>
 </head>
 

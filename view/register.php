@@ -70,7 +70,7 @@
             <div class="mb-3 row">
               <label class="col-md-4 col-form-label text-md-end">Género</label>
               <div class="col-md-6">
-                <select class='custom-select' name='genero' id='list-generos' required>
+                <select class='form-select' name='genero' id='list-generos' required>
                   <option value=''>Elige tu genero</option>
                   <option value='Hombre'>Hombre</option>
                   <option value='Mujer'>Mujer</option>
